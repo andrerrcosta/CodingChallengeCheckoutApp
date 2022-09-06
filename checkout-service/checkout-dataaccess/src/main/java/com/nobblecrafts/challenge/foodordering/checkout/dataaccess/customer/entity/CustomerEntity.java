@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "customer")
 @Entity
+@ToString
 public class CustomerEntity {
     @Id
     private Long id;

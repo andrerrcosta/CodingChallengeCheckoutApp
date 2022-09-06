@@ -16,6 +16,8 @@ public class BasketDaoRepository implements BasketRepository {
 
     @Override
     public Basket save(Basket basket) {
-        return mapper.toBasket(repository.save(mapper.toBasketEntity(basket)));
+        repository
+                .save(mapper.toBasketEntity(basket));
+        return basket;
     }
 }

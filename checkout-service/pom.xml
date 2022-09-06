@@ -15,6 +15,7 @@
         <module>checkout-app</module>
         <module>checkout-dataaccess</module>
         <module>checkout-domain</module>
+        <module>checkout-container</module>
     </modules>
 
 

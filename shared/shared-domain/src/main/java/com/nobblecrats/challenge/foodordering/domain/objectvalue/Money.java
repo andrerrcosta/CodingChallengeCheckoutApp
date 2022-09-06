@@ -5,9 +5,16 @@ import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Money {
+
     private final BigDecimal amount;
 
     public static final Money ZERO = new Money(BigDecimal.ZERO);
+    public static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
+
+    public static Money buildWithCents(Integer cents) {
+        var amount = new BigDecimal(cents).divide(Money.ONE_HUNDRED, 2, RoundingMode.HALF_EVEN);
+        return new Money(amount);
+    }
 
     public Money(BigDecimal amount) {
         this.amount = amount;
@@ -33,6 +40,10 @@ public class Money {
         return new Money(setScale(this.amount.multiply(new BigDecimal(multiplier))));
     }
 
+    public Money percent(BigDecimal percent) {
+        return new Money(setScale(this.amount.multiply(percent).divide(ONE_HUNDRED)));
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -52,6 +63,11 @@ public class Money {
 
     private BigDecimal setScale(BigDecimal input) {
         return input.setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    @Override
+    public String toString() {
+        return amount.toString();
     }
 }
 

@@ -1,7 +1,10 @@
 package com.nobblecrats.challenge.foodordering.domain.objectvalue;
 
+import lombok.ToString;
+
 import java.util.Objects;
 
+@ToString
 public abstract class BaseId<T> {
     private final T value;
 

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,14 +16,12 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 public class Promotion extends BaseEntity<PromotionId> {
-    @Builder.Default
-    private Set<Product> products = new HashSet();
     private PromotionType type;
     // for BUY_X_GET_Y_FREE
     private Integer requiredQuantity;
-    private Integer minQuantity;
+    private Integer freeQuantity;
     // for FLAT_PERCENT
-    private Float amount;
+    private BigDecimal amount;
     // for QTY_BASED_PRICE_OVERRIDE
     private Money price;
 }

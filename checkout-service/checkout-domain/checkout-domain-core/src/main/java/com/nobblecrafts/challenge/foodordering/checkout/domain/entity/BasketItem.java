@@ -4,26 +4,30 @@ import com.nobblecrafts.challenge.foodordering.checkout.domain.objectvalue.Baske
 import com.nobblecrats.challenge.foodordering.domain.entity.BaseEntity;
 import com.nobblecrats.challenge.foodordering.domain.objectvalue.BasketId;
 import com.nobblecrats.challenge.foodordering.domain.objectvalue.Money;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
+@ToString
 @SuperBuilder
 public class BasketItem extends BaseEntity<BasketItemId> {
+
     private BasketId basketId;
-    private final Product product;
-    private final int quantity;
+    private final String productName;
+    private final String productId;
+    @Builder.Default
+    private Integer quantity = Integer.valueOf(0);
     private final Money price;
-    private final Money subTotal;
+    @Builder.Default
+    private final Set<Promotion> promotions = new HashSet<>();
 
-    void initializeBasketItem(BasketId basketId, BasketItemId basketItemId) {
-        this.basketId = basketId;
-        super.setId(basketItemId);
+    public void increaseQuantity() {
+        this.quantity++;
     }
 
-    public boolean isPriceValid() {
-        return price.isGreaterThanZero() &&
-                price.equals(product.getPrice()) &&
-                price.multiply(quantity).equals(subTotal);
-    }
 }
