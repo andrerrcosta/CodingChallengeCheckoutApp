@@ -57,12 +57,13 @@ public class CheckoutBasketHelper {
 
     public void addItemToBasket() {
         /**
-         * Maybe use some functional interface inside
-         * the Basket to apply promotions through implementations
-         * of a utilitarian promotion interface.
-         * I should have implemented this method. but I haven't enough time to do that,
-         * so I coupled the {@link Basket} with the responsability
-         * of apply the promotions. I don't it was the best way, but it is what it is.
+         * Maybe use some functional interface within Basket 
+         * to apply promotions through implementations of a promotion 
+         * utility interface. I should have implemented this method 
+         * but I didn't have enough time for that, so I delegated the {@link Basket} 
+         * with the responsibility of applying the promotions.
+         * the problem with the implementation that was applied is the coupling.
+         * But i will implement this method soon.
          */
     }
 
