@@ -21,10 +21,14 @@ public class CheckoutProductHelper {
 
     public BasketItem scanBasketItem(BasketItemRequest request) {
         String url = String.format("%s/products/%s", configData.getApiUrl(), request.productId());
-        var product = restTemplate.getForEntity(url, ProductDto.class).getBody();
-        if (product == null)
+        ProductDto productDto = null;
+        try {
+            productDto = restTemplate.getForEntity(url, ProductDto.class).getBody();
+        } catch (Exception e) {
+            log.warn("Product with id '" + request.productId() + "' not found");
             throw new CheckoutNotFoundException("Product with id '" + request.productId() + "' not found");
-        return mapper.toBasketItem(product);
+        }
+        return mapper.toBasketItem(productDto);
     }
 
 

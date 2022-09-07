@@ -1,5 +1,6 @@
 package com.nobblecrafts.challenge.foodordering.checkout.domain.entity;
 
+import com.nobblecrafts.challenge.foodordering.checkout.domain.exception.CheckoutDomainException;
 import com.nobblecrats.challenge.foodordering.domain.entity.AggregateRoot;
 import com.nobblecrats.challenge.foodordering.domain.objectvalue.BasketId;
 import com.nobblecrats.challenge.foodordering.domain.objectvalue.CustomerId;
@@ -8,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.UUID;
 @Getter
 @ToString
 @SuperBuilder
-@Slf4j
 public class Basket extends AggregateRoot<BasketId> {
 
     private final CustomerId customerId;
@@ -32,10 +31,7 @@ public class Basket extends AggregateRoot<BasketId> {
     private Money totalPayable = new Money(new BigDecimal("0"));
 
     public void addItem(BasketItem item) {
-        log.info("\n\nBefore Add To List: {}", item);
         var added = this.addItemToList(item);
-        log.info("\n\n{} is empty?", added.getProductName());
-        log.info("\n\n{}\n\n", added);
         if (!added.getPromotions().isEmpty()) {
             verifyPromotion(added);
         }
@@ -45,27 +41,58 @@ public class Basket extends AggregateRoot<BasketId> {
         setId(new BasketId(UUID.randomUUID()));
     }
 
-    private BasketItem addItemToList(BasketItem item) {
-        log.info("\n\nADD-ITEM-TO-LIST {}", item);
+    public void validateBasket() {
+        validateBasketSize();
+        validateBasketPrice();
+        validateItemsPrice();
+    }
 
-        var optional = items.stream().filter(i -> i.getProductId().equals(item.getProductId())).findFirst();
-        if (optional.isEmpty()) {
-            log.info("\n\nEMPTY: {}\n\n", items);
-            this.items.add(item);
-            item.setBasketId(this.getId());
-            item.increaseQuantity();
-            this.price = this.price.add(item.getPrice());
-            this.totalPayable = this.totalPayable.add(item.getPrice());
-            return item;
-        } else {
-            log.info("\n\nNOT-EMPTY: {}", items);
-            var output = optional.get();
-            log.info("\n\nOptional Get: {}\n\n", optional.get());
-            output.increaseQuantity();
-            this.price = this.price.add(item.getPrice());
-            this.totalPayable = this.totalPayable.add(item.getPrice());
-            return output;
+    private void validateBasketSize() {
+        if (items.size() < 1) {
+            throw new CheckoutDomainException("Basket must contain at least one item!");
         }
+    }
+
+    private void validateBasketPrice() {
+        if (price == null || !price.isGreaterThanZero()) {
+            throw new CheckoutDomainException("Total price must be greater than zero!");
+        }
+    }
+
+    private void validateItemsPrice() {
+        Money itemsTotal = items.stream()
+                .map(BasketItem::getSubtotal)
+                .reduce(Money.ZERO, Money::add);
+        if (!price.equals(itemsTotal)) {
+            throw new CheckoutDomainException("Total price: " + price.getAmount()
+                    + " is not equal to basket items total: " + itemsTotal.getAmount() + "!");
+        }
+    }
+
+    private BasketItem addItemToList(BasketItem item) {
+        var optional = items.stream()
+                .filter(i -> i.getProductId().equals(item.getProductId()))
+                .findFirst();
+        if (optional.isEmpty()) {
+            return createNewItem(item);
+        }
+        return increaseItem(optional.get());
+    }
+
+    private BasketItem createNewItem(BasketItem item) {
+        this.items.add(item);
+        item.setBasketId(this.getId());
+        item.increaseQuantity();
+        this.price = this.price.add(item.getPrice());
+        this.totalPayable = this.totalPayable.add(item.getPrice());
+        return item;
+    }
+
+    private BasketItem increaseItem(BasketItem item) {
+        item.increaseQuantity();
+        this.price = this.price.add(item.getPrice());
+        this.totalPayable = this.totalPayable.add(item.getPrice());
+        return item;
     }
 
 
@@ -76,19 +103,21 @@ public class Basket extends AggregateRoot<BasketId> {
      * an array of promotions, so I'm taking
      * the first promotion as the valid one.
      *
+     *
      * @param item
      */
     private void verifyPromotion(BasketItem item) {
+        /**
+         * This method should be replaced by an functional interface as parameters
+         * to implement different promotions based on some generics.
+         */
         var optional = item.getPromotions().stream().findFirst();
         if (!optional.isEmpty()) {
             var promotion = optional.get();
             switch (promotion.getType()) {
                 case QTY_BASED_PRICE_OVERRIDE -> {
-                    log.info("\n\nQTY_BASED_PRICE_OVERRIDE?: {}\n\n", item.getProductName());
-                    log.info("\n\n{} % {}\n\n", item.getQuantity(), promotion.getRequiredQuantity());
                     var rest = item.getQuantity() % promotion.getRequiredQuantity();
                     if (rest == 0) {
-                        log.info("\n\nYES?: {}\n\n", item.getProductName());
                         var replacePrice = item.getPrice().multiply(promotion.getRequiredQuantity());
                         this.totalPayable = totalPayable
                                 .subtract(replacePrice)

@@ -57,7 +57,8 @@ public class CheckoutControllerTest {
 
 
     @Test
-    public void A_testCheckoutWithWrongCustomer() {
+    @DisplayName("Testing adding a single product with wrong customer")
+    public void A_testAddItemWrongCustomer() {
         var req = DtoSupplier.randomBasketItemRequest(1L);
         log.info("\n\nREQUESTING: {}\n\n", req);
         var res = addItem(req);
@@ -65,12 +66,20 @@ public class CheckoutControllerTest {
     }
 
     @Test
-    @DisplayName("Testing adding a single product")
-    public void B0_testCheckoutWithManyProducts() {
+    @DisplayName("Testing checkout a basket without products")
+    public void A_testCheckoutWithoutProducts() {
         saveCustomer(CustomerEntity.builder()
                 .id(1L)
                 .name("Test Customer")
                 .build());
+        var res = checkout(1L);
+        Assertions.assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    @DisplayName("Testing adding a single product")
+    public void B0_testAddACorrectProduct() {
+
 
         var req = DtoSupplier.basketItemRequest(1L, "Boring Fries");
         var res = addItem(req);
@@ -81,9 +90,22 @@ public class CheckoutControllerTest {
     }
 
     @Test
+    @DisplayName("Testing adding a single product with wrong id")
+    public void B1_testAddAWrongProduct() {
+
+        var req = BasketItemRequest.builder()
+                .customerId(1L)
+                .productId("gadsasgasgasgasg")
+                .build();
+        var res = addItem(req);
+
+        Assertions.assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
     @DisplayName("Checking dbs for persisted entities")
     @Transactional(readOnly = true)
-    public void B1_checkCacheAndDatabase() {
+    public void B2_checkCacheAndDatabase() {
         var allCached = basketRedisCrudRepository.findAll();
         var allPersisted = basketJpaRepository.findAll();
         log.info("\n\nAll Cached: {}", allCached);

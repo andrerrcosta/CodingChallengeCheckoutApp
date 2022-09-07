@@ -2,10 +2,8 @@ package com.nobblecrafts.challenge.foodordering.checkout.domain.jpa;
 
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.basket.repository.BasketRedisCrudRepository;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.config.TestRedisConfiguration;
-import com.nobblecrafts.challenge.foodordering.checkout.domain.util.EntitySupplier;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,13 @@ public class BasketRedisCrudRepositoryTest {
     @Autowired
     private BasketRedisCrudRepository crudRepository;
 
-    @Test
-    public void A0_testCachingBasket() {
-        var basket = EntitySupplier.basketRedisEntity();
-        crudRepository.save(basket);
-    }
+    /**
+     * The time is up
+     */
+
+//    @Test
+//    public void A0_testCachingBasket() {
+//        var basket = EntitySupplier.basketRedisEntity();
+//        crudRepository.save(basket);
+//    }
 }

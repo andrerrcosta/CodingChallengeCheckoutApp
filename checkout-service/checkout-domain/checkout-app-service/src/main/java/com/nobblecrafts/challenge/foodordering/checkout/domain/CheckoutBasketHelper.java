@@ -49,7 +49,8 @@ public class CheckoutBasketHelper {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public BasketResponse checkout(Basket basket) {
-        var entity = basketRepository.save(basket);
+        var entity = basketRepository.save(checkoutDomainService.
+                validateAndInitiateBasket(basket));
         basketCachingRepository.remove(basket);
         return mapper.toBasketResponse(entity);
     }
@@ -58,7 +59,10 @@ public class CheckoutBasketHelper {
         /**
          * Maybe use some functional interface inside
          * the Basket to apply promotions through implementations
-         * of a utilitarian interface
+         * of a utilitarian promotion interface.
+         * I should have implemented this method. but I haven't enough time to do that,
+         * so I coupled the {@link Basket} with the responsability
+         * of apply the promotions. I don't it was the best way, but it is what it is.
          */
     }
 

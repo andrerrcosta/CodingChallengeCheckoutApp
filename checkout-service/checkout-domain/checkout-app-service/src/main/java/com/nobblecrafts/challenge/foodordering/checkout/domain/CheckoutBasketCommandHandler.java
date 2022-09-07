@@ -21,7 +21,6 @@ public class CheckoutBasketCommandHandler {
         var item = checkoutProductHelper.scanBasketItem(basketRequest);
         var basket = checkoutBasketHelper.recoverOrCreateBasket(basketRequest.customerId());
         basket.addItem(item);
-//        log.info("\n\nBasket: {}\n\n", basket);
         return checkoutBasketHelper.cacheBasket(basket);
     }
 

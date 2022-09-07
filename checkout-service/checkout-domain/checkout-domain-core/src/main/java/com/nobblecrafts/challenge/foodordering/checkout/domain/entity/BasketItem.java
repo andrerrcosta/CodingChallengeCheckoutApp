@@ -34,4 +34,8 @@ public class BasketItem extends BaseEntity<BasketItemId> {
         this.basketId = id;
     }
 
+    public Money getSubtotal() {
+        return price.multiply(quantity);
+    }
+
 }
