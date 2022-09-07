@@ -8,5 +8,5 @@ import java.util.List;
 
 @Builder
 public record BasketRequest(@NotNull Long customerId,
-                            @NotNull List<String> itemIds) {
+                            @NotNull String itemId) {
 }

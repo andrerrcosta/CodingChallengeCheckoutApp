@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Getter
 @ToString
 @SuperBuilder
+@Slf4j
 public class Basket extends AggregateRoot<BasketId> {
 
     private final CustomerId customerId;
@@ -30,7 +32,10 @@ public class Basket extends AggregateRoot<BasketId> {
     private Money totalPayable = new Money(new BigDecimal("0"));
 
     public void addItem(BasketItem item) {
+        log.info("\n\nBefore Add To List: {}", item);
         var added = this.addItemToList(item);
+        log.info("\n\n{} is empty?", added.getProductName());
+        log.info("\n\n{}\n\n", added);
         if (!added.getPromotions().isEmpty()) {
             verifyPromotion(added);
         }
@@ -41,15 +46,21 @@ public class Basket extends AggregateRoot<BasketId> {
     }
 
     private BasketItem addItemToList(BasketItem item) {
+        log.info("\n\nADD-ITEM-TO-LIST {}", item);
+
         var optional = items.stream().filter(i -> i.getProductId().equals(item.getProductId())).findFirst();
         if (optional.isEmpty()) {
+            log.info("\n\nEMPTY: {}\n\n", items);
             this.items.add(item);
+            item.setBasketId(this.getId());
             item.increaseQuantity();
             this.price = this.price.add(item.getPrice());
             this.totalPayable = this.totalPayable.add(item.getPrice());
             return item;
         } else {
+            log.info("\n\nNOT-EMPTY: {}", items);
             var output = optional.get();
+            log.info("\n\nOptional Get: {}\n\n", optional.get());
             output.increaseQuantity();
             this.price = this.price.add(item.getPrice());
             this.totalPayable = this.totalPayable.add(item.getPrice());
@@ -73,9 +84,11 @@ public class Basket extends AggregateRoot<BasketId> {
             var promotion = optional.get();
             switch (promotion.getType()) {
                 case QTY_BASED_PRICE_OVERRIDE -> {
+                    log.info("\n\nQTY_BASED_PRICE_OVERRIDE?: {}\n\n", item.getProductName());
+                    log.info("\n\n{} % {}\n\n", item.getQuantity(), promotion.getRequiredQuantity());
                     var rest = item.getQuantity() % promotion.getRequiredQuantity();
                     if (rest == 0) {
-
+                        log.info("\n\nYES?: {}\n\n", item.getProductName());
                         var replacePrice = item.getPrice().multiply(promotion.getRequiredQuantity());
                         this.totalPayable = totalPayable
                                 .subtract(replacePrice)

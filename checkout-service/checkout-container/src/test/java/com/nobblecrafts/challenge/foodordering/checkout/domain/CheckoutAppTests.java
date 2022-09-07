@@ -47,19 +47,19 @@ public class CheckoutAppTests {
 
     @Test
     public void B_testApi() {
-        var req = BasketRequest.builder()
-                .itemIds(List.of("PWWe3w1SDU", "PWWe3w1SDU", "PWWe3w1SDU",
-                        "Dwt5F7KAhi", "Dwt5F7KAhi", "Dwt5F7KAhi",
-                        "4MB7UfpTQs", "4MB7UfpTQs", "C8GDyLrHJb"))
-                .customerId(1L)
-                .build();
-
-        var x = template.exchange("http://localhost:8081/products",
-                HttpMethod.GET,
-                new HttpEntity<>(req),
-                BasketResponse[].class);
-        Arrays.stream(x.getBody()).forEach(System.out::println);
-        log.info("products: {}", x.getBody());
+//        var req = BasketRequest.builder()
+//                .itemIds(List.of("PWWe3w1SDU", "PWWe3w1SDU", "PWWe3w1SDU",
+//                        "Dwt5F7KAhi", "Dwt5F7KAhi", "Dwt5F7KAhi",
+//                        "4MB7UfpTQs", "4MB7UfpTQs", "C8GDyLrHJb"))
+//                .customerId(1L)
+//                .build();
+//
+//        var x = template.exchange("http://localhost:8081/products",
+//                HttpMethod.GET,
+//                new HttpEntity<>(req),
+//                BasketResponse[].class);
+//        Arrays.stream(x.getBody()).forEach(System.out::println);
+//        log.info("products: {}", x.getBody());
     }
 
 }

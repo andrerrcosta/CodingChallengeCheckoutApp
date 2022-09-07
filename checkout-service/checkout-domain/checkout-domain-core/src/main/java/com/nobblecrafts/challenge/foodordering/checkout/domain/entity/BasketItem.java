@@ -30,4 +30,8 @@ public class BasketItem extends BaseEntity<BasketItemId> {
         this.quantity++;
     }
 
+    public void setBasketId(BasketId id) {
+        this.basketId = id;
+    }
+
 }

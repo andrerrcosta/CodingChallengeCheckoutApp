@@ -6,6 +6,7 @@ import com.nobblecrats.challenge.foodordering.domain.objectvalue.PromotionId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @SuperBuilder
+@ToString
 public class Promotion extends BaseEntity<PromotionId> {
     private PromotionType type;
     // for BUY_X_GET_Y_FREE

@@ -2,6 +2,7 @@ package com.nobblecrafts.challenge.foodordering.checkout.dataaccess.customer.map
 
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.customer.entity.CustomerEntity;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.Customer;
+import com.nobblecrats.challenge.foodordering.domain.objectvalue.CustomerId;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,11 +14,17 @@ import java.util.Set;
 public abstract class CustomerDaoMapper {
     public static final CustomerDaoMapper INSTANCE = Mappers.getMapper(CustomerDaoMapper.class);
 
-    @Mapping(source = "id.value", target = "id")
     public abstract CustomerEntity toCustomerEntity(Customer customer);
 
-    @Mapping(target = "id.value", source = "id")
     public abstract Customer toCustomer(CustomerEntity entity);
 
     public abstract Set<Customer> toCustomer(Iterable<CustomerEntity> entities);
+
+    public Long fromCustomerIdToLong(CustomerId id) {
+        return id.getValue();
+    }
+
+    public CustomerId fromLongToCustomerId(Long id) {
+        return new CustomerId(id);
+    }
 }

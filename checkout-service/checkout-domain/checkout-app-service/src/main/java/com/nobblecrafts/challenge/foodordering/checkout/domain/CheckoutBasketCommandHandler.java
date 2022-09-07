@@ -1,5 +1,6 @@
 package com.nobblecrafts.challenge.foodordering.checkout.domain;
 
+import com.nobblecrafts.challenge.foodordering.checkout.domain.dto.BasketItemRequest;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.dto.BasketRequest;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.dto.BasketResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,18 @@ public class CheckoutBasketCommandHandler {
     private final CheckoutProductHelper checkoutProductHelper;
 
     @Transactional
-    public BasketResponse checkout(BasketRequest basketRequest) {
-        var basket = checkoutProductHelper.buildBasket(basketRequest);
-        var response = checkoutBasketHelper.persistBasket(basket);
-        return response;
+    public BasketResponse addItem(BasketItemRequest basketRequest) {
+        var item = checkoutProductHelper.scanBasketItem(basketRequest);
+        var basket = checkoutBasketHelper.recoverOrCreateBasket(basketRequest.customerId());
+        basket.addItem(item);
+//        log.info("\n\nBasket: {}\n\n", basket);
+        return checkoutBasketHelper.cacheBasket(basket);
+    }
+
+    @Transactional
+    public BasketResponse checkout(Long customerId) {
+        var basket = checkoutBasketHelper.recoverOrCreateBasket(customerId);
+        return checkoutBasketHelper.checkout(basket);
     }
 
 

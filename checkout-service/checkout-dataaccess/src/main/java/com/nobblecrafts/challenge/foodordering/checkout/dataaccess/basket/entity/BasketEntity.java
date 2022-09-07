@@ -2,11 +2,12 @@ package com.nobblecrafts.challenge.foodordering.checkout.dataaccess.basket.entit
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.customer.entity.CustomerEntity;
+import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.BasketItem;
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -20,19 +21,24 @@ import java.util.UUID;
 @Entity
 @ToString
 public class BasketEntity {
+
     @Id
     private UUID id;
 
     @Builder.Default
     @ElementCollection
-    private List<String> items = new LinkedList<>();
+    private List<String> productIds = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference(value = "customer-baskets")
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
-    private BigDecimal price;
+    private BigDecimal total;
+
+    private BigDecimal totalPayable;
+
+    private BigDecimal totalPromos;
 
     @Override
     public boolean equals(Object o) {
@@ -47,4 +53,10 @@ public class BasketEntity {
         return Objects.hash(id, customer);
     }
 
+
+    public void addItems(String itemId, Integer amount) {
+        for(var i = 0; i < amount; i++) {
+            productIds.add(itemId);
+        }
+    }
 }

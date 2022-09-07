@@ -25,7 +25,6 @@ public class CustomerEntity {
     @JsonManagedReference(value = "customer-baskets")
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     private Set<BasketEntity> baskets = new LinkedHashSet<>();
 
     @Override

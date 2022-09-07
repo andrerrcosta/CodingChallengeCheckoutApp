@@ -11,7 +11,8 @@
     <modules>
         <module>checkout-service</module>
         <module>shared</module>
-<!--        <module>admin-service</module>-->
+        <module>infrastructure</module>
+        <!--        <module>admin-service</module>-->
     </modules>
 
     <parent>
@@ -27,6 +28,10 @@
         <spring-boot.version>2.6.3</spring-boot.version>
         <jackson.version>2.13.0</jackson.version>
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
+        <junit.version>4.12</junit.version>
+        <org.junit.jupiter.version>5.8.1</org.junit.jupiter.version>
+        <embedded-redis.version>0.7.2</embedded-redis.version>
+        <java-faker.version>1.0.2</java-faker.version>
     </properties>
 
     <dependencyManagement>
@@ -53,7 +58,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -61,7 +66,20 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>5.8.1</version>
+                <scope>${org.junit.jupiter.version}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>it.ozimov</groupId>
+                <artifactId>embedded-redis</artifactId>
+                <version>${embedded-redis.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${java-faker.version}</version>
             </dependency>
 
             <!--            END TEST-->
@@ -131,6 +149,14 @@
                 <version>${org.mapstruct.version}</version>
             </dependency>
 <!--            END MAPPING-->
+
+<!--            DATABASE-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+<!--            END DATABASE-->
         </dependencies>
     </dependencyManagement>
 

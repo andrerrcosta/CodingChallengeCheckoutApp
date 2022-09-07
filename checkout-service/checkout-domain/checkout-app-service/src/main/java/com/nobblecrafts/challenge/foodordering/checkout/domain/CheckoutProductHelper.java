@@ -1,11 +1,11 @@
 package com.nobblecrafts.challenge.foodordering.checkout.domain;
 
 import com.nobblecrafts.challenge.foodordering.checkout.domain.config.CheckoutServiceConfigData;
-import com.nobblecrafts.challenge.foodordering.checkout.domain.dto.BasketRequest;
+import com.nobblecrafts.challenge.foodordering.checkout.domain.dto.BasketItemRequest;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.dto.ProductDto;
-import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.Basket;
+import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.BasketItem;
+import com.nobblecrafts.challenge.foodordering.checkout.domain.exception.CheckoutNotFoundException;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.mapper.CheckoutDataMapper;
-import com.nobblecrats.challenge.foodordering.domain.objectvalue.CustomerId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,17 +19,13 @@ public class CheckoutProductHelper {
     private final RestTemplate restTemplate;
     private final CheckoutDataMapper mapper = CheckoutDataMapper.INSTANCE;
 
-    public Basket buildBasket(BasketRequest request) {
-        var basket = Basket.builder()
-                .customerId(new CustomerId(request.customerId()))
-                .build();
-
-        request.itemIds().forEach(id -> {
-            String url = String.format("%s/products/%s", configData.getApiUrl(), id);
-            var product = restTemplate.getForEntity(url, ProductDto.class).getBody();
-            basket.addItem(mapper.toBasketItem(product));
-        });
-        return basket;
+    public BasketItem scanBasketItem(BasketItemRequest request) {
+        String url = String.format("%s/products/%s", configData.getApiUrl(), request.productId());
+        var product = restTemplate.getForEntity(url, ProductDto.class).getBody();
+        if (product == null)
+            throw new CheckoutNotFoundException("Product with id '" + request.productId() + "' not found");
+        return mapper.toBasketItem(product);
     }
+
 
 }
