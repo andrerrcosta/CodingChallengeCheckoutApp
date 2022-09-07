@@ -20,6 +20,7 @@ import java.util.Set;
 public class CustomerEntity {
     @Id
     private Long id;
+    @Column(nullable = false)
     private String name;
     @Builder.Default
     @JsonManagedReference(value = "customer-baskets")

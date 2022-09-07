@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @TestConfiguration
-@EnableRedisRepositories
 //@ActiveProfiles("test")
 public class TestRedisConfiguration {
 

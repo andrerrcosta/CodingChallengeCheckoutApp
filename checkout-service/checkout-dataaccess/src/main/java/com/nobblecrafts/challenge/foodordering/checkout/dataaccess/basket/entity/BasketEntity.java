@@ -2,7 +2,6 @@ package com.nobblecrafts.challenge.foodordering.checkout.dataaccess.basket.entit
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.customer.entity.CustomerEntity;
-import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.BasketItem;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +16,9 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "basket")
+@Table(name = "basket", indexes = {
+        @Index(name = "bkt_ctm_index", columnList = "customer_id")
+})
 @Entity
 @ToString
 public class BasketEntity {
@@ -27,11 +28,13 @@ public class BasketEntity {
 
     @Builder.Default
     @ElementCollection
+    @CollectionTable(name = "basket_products", joinColumns = @JoinColumn(name = "basket_id"))
+    @Column(name = "product_id", nullable = false)
     private List<String> productIds = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference(value = "customer-baskets")
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer;
 
     private BigDecimal total;
