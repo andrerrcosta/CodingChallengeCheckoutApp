@@ -69,7 +69,7 @@ public class BasketEntityTest {
 
 
     @Test
-    @DisplayName("Managed Against transient shouldn't not be found")
+    @DisplayName("Managed Against transient shouldn't be found")
     public void B_testTransientToManaged() {
         assertNotNull(basket1.getId());
         log.info("\nTransient entity: {}\n\n", basket1);
@@ -88,7 +88,7 @@ public class BasketEntityTest {
     }
 
     @Test
-    @DisplayName("Managed Against transient shouldn't not be found (Merge)")
+    @DisplayName("Managed Against transient shouldn't be found (Merge)")
     // Find in Set the entity after merge() was called - SELECT and UPDATE statement
     // State transition at assertion point: MANAGED
     public void C_stillManagedAgainsTransient() {
@@ -103,7 +103,7 @@ public class BasketEntityTest {
     @Test
     // Find in Set the entity after find() was called - SELECT statement
     // State transition at assertion point: MANAGED
-    @DisplayName("Managed Against transient shouldn't not be found again")
+    @DisplayName("Managed Against transient shouldn't be found again")
     public void D_stillManagedAgainsTransient() {
         var found = entityManager
                 .find(BasketEntity.class, basket1.getId());
@@ -115,7 +115,7 @@ public class BasketEntityTest {
     @Test
     // Find in Set the entity after detach() was called
     // State transition at assertion point: DETACHED
-    @DisplayName("Detached Against transient shouldn't not be found")
+    @DisplayName("Detached Against transient shouldn't be found")
     public void E_detachedAgainstTransient() {
         var found = entityManager
                 .find(BasketEntity.class, basket1.getId());
@@ -127,7 +127,7 @@ public class BasketEntityTest {
     @Test
     // Find in Set the entity after remove() was called - DELETE statement
     // State transition at assertion points: REMOVED
-    @DisplayName("Removed Agains transient shouldn't not be found")
+    @DisplayName("Removed Agains transient shouldn't be found")
     public void F_removedAgainstTransient() {
         var found = entityManager
                 .find(BasketEntity.class, basket1.getId());
