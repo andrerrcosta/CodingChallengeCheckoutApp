@@ -27,12 +27,6 @@ public class BasketRedisCrudRepositoryTest {
     private BasketRedisCrudRepository crudRepository;
 
     /**
-     * The time is up
+     * I will create this tests tomorrow
      */
-
-//    @Test
-//    public void A0_testCachingBasket() {
-//        var basket = EntitySupplier.basketRedisEntity();
-//        crudRepository.save(basket);
-//    }
 }

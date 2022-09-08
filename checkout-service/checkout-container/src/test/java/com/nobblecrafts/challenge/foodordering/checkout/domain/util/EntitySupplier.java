@@ -1,9 +1,12 @@
 package com.nobblecrafts.challenge.foodordering.checkout.domain.util;
 
 import com.github.javafaker.Faker;
+import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.basket.entity.BasketEntity;
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.basket.entity.BasketRedisEntity;
+import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.customer.entity.CustomerEntity;
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.product.entity.ProductRedisEntity;
 import com.nobblecrafts.challenge.foodordering.checkout.dataaccess.promotion.entity.PromotionRedisEntity;
+import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.BasketItem;
 import com.nobblecrafts.challenge.foodordering.checkout.domain.entity.PromotionType;
 
 import java.math.BigDecimal;
@@ -75,6 +78,25 @@ public class EntitySupplier {
             }
         }
         return output;
+    }
+
+    public static BasketEntity basketEntity() {
+        return BasketEntity.builder()
+                .id(UUID.randomUUID())
+
+                .build();
+    }
+
+    public static BasketItem basketItem() {
+        return BasketItem.builder()
+                .build();
+    }
+
+    public static CustomerEntity customerEntity(Long id) {
+        return CustomerEntity.builder()
+                .id(id)
+                .name(faker.funnyName().name())
+                .build();
     }
 
 

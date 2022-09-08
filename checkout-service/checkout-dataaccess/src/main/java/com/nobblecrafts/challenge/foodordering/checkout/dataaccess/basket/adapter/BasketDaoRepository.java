@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class BasketDaoRepository implements BasketRepository {
 
-
     private final CustomerJpaRepository customerJpaRepository;
     private final BasketDaoMapper mapper = BasketDaoMapper.INSTANCE;
 

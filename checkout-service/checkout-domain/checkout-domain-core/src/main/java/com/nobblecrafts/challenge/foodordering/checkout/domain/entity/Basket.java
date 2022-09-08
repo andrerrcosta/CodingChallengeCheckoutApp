@@ -11,9 +11,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @ToString
@@ -22,13 +20,13 @@ public class Basket extends AggregateRoot<BasketId> {
 
     private final CustomerId customerId;
     @Builder.Default
-    private Money price = new Money(new BigDecimal("0"));
+    private Money price = new Money(BigDecimal.ZERO);
     @Builder.Default
-    private final List<BasketItem> items = new ArrayList<>();
+    private final Set<BasketItem> items = new HashSet<>();
     @Builder.Default
-    private Money promo = new Money(new BigDecimal("0"));
+    private Money promo = new Money(BigDecimal.ZERO);
     @Builder.Default
-    private Money totalPayable = new Money(new BigDecimal("0"));
+    private Money totalPayable = new Money(BigDecimal.ZERO);
 
     public void addItem(BasketItem item) {
         var added = this.addItemToList(item);
