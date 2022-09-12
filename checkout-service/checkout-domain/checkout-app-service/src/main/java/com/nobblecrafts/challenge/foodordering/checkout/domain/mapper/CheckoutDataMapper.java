@@ -54,7 +54,7 @@ public abstract class CheckoutDataMapper {
     public Promotion toPromotion(PromotionDto dto) {
         return Promotion.builder()
                 .type(PromotionType.valueOf(dto.type()))
-                .id(new PromotionId(UUID.randomUUID()))
+                .id(new PromotionId(dto.id()))
                 .price(dto.price() != null ? Money.buildWithCents(dto.price()) : null)
                 .requiredQuantity(dto.requiredQuantity())
                 .freeQuantity(dto.freeQuantity())

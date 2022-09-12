@@ -11,7 +11,9 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @ToString
@@ -101,7 +103,6 @@ public class Basket extends AggregateRoot<BasketId> {
      * an array of promotions, so I'm taking
      * the first promotion as the valid one.
      *
-     *
      * @param item
      */
     private void verifyPromotion(BasketItem item) {
@@ -110,6 +111,7 @@ public class Basket extends AggregateRoot<BasketId> {
          * to implement different promotions based on some generics.
          */
         var optional = item.getPromotions().stream().findFirst();
+
         if (!optional.isEmpty()) {
             var promotion = optional.get();
             switch (promotion.getType()) {

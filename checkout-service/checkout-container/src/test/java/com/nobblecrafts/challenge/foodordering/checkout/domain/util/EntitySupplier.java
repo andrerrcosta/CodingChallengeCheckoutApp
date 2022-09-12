@@ -83,12 +83,14 @@ public class EntitySupplier {
     public static BasketEntity basketEntity() {
         return BasketEntity.builder()
                 .id(UUID.randomUUID())
-
                 .build();
     }
 
     public static BasketItem basketItem() {
         return BasketItem.builder()
+                .productName(faker.commerce().productName())
+                .productId(UUID.randomUUID().toString())
+                .quantity(1)
                 .build();
     }
 

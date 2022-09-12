@@ -25,7 +25,9 @@ and Domain Driven Design. The main technologies used here were RedisDB, H2 and M
 
 # Follow-up Questions
 1. How long did you spend on the test?
-- I spent about 30 hours with this test.
+
+- I spent about 30 hours on this test.
+
 2. What would you add if you had more time?
 
 - I would have finished at least the tests on entities for hashes and JPA tests
@@ -35,7 +37,11 @@ and Domain Driven Design. The main technologies used here were RedisDB, H2 and M
 
 - I would have implemented the communication between the product creation
 and the checkout database, implemented eventual consistency
-with cached products and changed its architecture to deliver messages. 
+with cached products and changed its architecture to deliver messages.
+- I would create a SQL function to apply the promotions by query arguments.
+(this is a good option because it would consume less resources, 
+it would only require one request for the whole basket, and it 
+would make it possible to add promotions through sql)
 
 4. What did you find most difficult?
 
@@ -47,7 +53,7 @@ The idea of making calls from the checkout
 service exceeds its functions. The customer should add items with calls
 to a client api. The client api should send a message
 to the checkout containing the product informations,
-the checkout should make the calculations and retrieve the results
+the checkout should make the calculations and return the results
 to the client api.
 
 5. How did you find the overall experience, any feedback for us?

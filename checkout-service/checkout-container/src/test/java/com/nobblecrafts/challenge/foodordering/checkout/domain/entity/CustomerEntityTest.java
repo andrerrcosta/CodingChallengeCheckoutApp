@@ -10,13 +10,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@ActiveProfiles("test")
-@Rollback(false)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Slf4j
+//@RunWith(SpringRunner.class)
+//@DataJpaTest
+//@ActiveProfiles("test")
+//@Rollback(false)
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@Slf4j
 public class CustomerEntityTest {
 
     /**

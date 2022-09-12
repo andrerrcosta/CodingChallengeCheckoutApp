@@ -11,7 +11,7 @@ public class ObjectValueMapper {
         return baseId.getValue();
     }
 
-    public PromotionId toPromotionId(UUID id) {
+    public PromotionId toPromotionId(String id) {
         return new PromotionId(id);
     }
 

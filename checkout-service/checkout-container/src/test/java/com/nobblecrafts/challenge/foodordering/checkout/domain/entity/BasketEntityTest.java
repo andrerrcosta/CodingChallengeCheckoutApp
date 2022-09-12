@@ -81,9 +81,12 @@ public class BasketEntityTest {
         log.info("\n\nBefore Flush: {}\n\n", x.getBaskets().stream().findFirst());
         entityManager.flush();
 
-        assertNotNull(basket1.getId());
-        log.info("\n\nManaged entity: {}\n\n", basket1);
-        assertFalse(baskets.contains(basket1));
+        var saved = x.getBaskets().stream().findFirst();
+
+        assertFalse(saved.isEmpty());
+        assertNotNull(saved.get().getId());
+        log.info("\n\nManaged entity: {}\n\n", saved.get());
+        assertFalse(baskets.contains(saved.get()));
         log.info("\n\nThis assert should be correct\n\n");
     }
 
@@ -164,12 +167,14 @@ public class BasketEntityTest {
         log.info("\nTransient entity: {}\n\n", basket2);
 
         var x = entityManager.persist(customer2);
+        var saved = x.getBaskets().stream().findFirst();
         log.info("\n\nBefore Flush: {}\n\n", x.getBaskets().stream().findFirst());
         entityManager.flush();
 
-        assertNotNull(basket2.getId());
-        log.info("\n\nManaged entity: {}\n\n", basket2);
-        assertTrue(baskets.contains(basket2));
+        assertFalse(saved.isEmpty());
+        assertNotNull(saved.get().getId());
+        log.info("\n\nManaged entity: {}\n\n", saved.get());
+        assertTrue(baskets.contains(saved.get()));
         log.info("\n\nThis assert should be correct\n\n");
     }
 
@@ -225,6 +230,25 @@ public class BasketEntityTest {
         baskets.remove(found);
 
         assertFalse(baskets.contains(found));
+    }
+
+    @Test
+    @DisplayName("Cleaning Database")
+    public void M_cleanDatabase() {
+        var a1 = entityManager.find(CustomerEntity.class, customer1.getId());
+        var a2 = entityManager.find(CustomerEntity.class, customer2.getId());
+        entityManager.remove(a1);
+        entityManager.remove(a2);
+        var b1 = entityManager.find(BasketEntity.class, basket1.getId());
+        var b2 = entityManager.find(BasketEntity.class, basket2.getId());
+        var c1 = entityManager.find(CustomerEntity.class, customer1.getId());
+        var c2 = entityManager.find(CustomerEntity.class, customer2.getId());
+        log.info("\n\n{}\n\n{}\n\n{}\n\n{}", b1, b2, c1, c2);
+        assertTrue(b1 == null);
+        assertTrue(b2 == null);
+        assertTrue(c1 == null);
+        assertTrue(c2 == null);
+
     }
 
 

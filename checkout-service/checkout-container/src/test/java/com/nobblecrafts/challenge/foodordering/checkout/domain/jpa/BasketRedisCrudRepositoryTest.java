@@ -12,13 +12,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles("test")
-@Rollback(false)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = TestRedisConfiguration.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Slf4j
+//@RunWith(SpringRunner.class)
+//@ActiveProfiles("test")
+//@Rollback(false)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+//        classes = TestRedisConfiguration.class)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@Slf4j
 public class BasketRedisCrudRepositoryTest {
 
     @Autowired

@@ -16,9 +16,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "basket", indexes = {
-        @Index(name = "bkt_ctm_index", columnList = "customer_id")
-})
+@Table(name = "basket")
 @Entity
 @ToString
 public class BasketEntity {

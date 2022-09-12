@@ -1,5 +1,6 @@
 package com.nobblecrats.challenge.foodordering.domain.entity;
 
+import com.nobblecrats.challenge.foodordering.domain.objectvalue.PromotionId;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
@@ -7,6 +8,9 @@ import java.util.Objects;
 @SuperBuilder
 public abstract class BaseEntity<ID> {
     private ID id;
+
+    public BaseEntity(PromotionId promotionId) {
+    }
 
     public ID getId() {
         return id;

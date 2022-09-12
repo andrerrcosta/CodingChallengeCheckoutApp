@@ -18,6 +18,7 @@ import java.util.Set;
 @SuperBuilder
 @ToString
 public class Promotion extends BaseEntity<PromotionId> {
+
     private PromotionType type;
     // for BUY_X_GET_Y_FREE
     private Integer requiredQuantity;

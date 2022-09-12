@@ -118,8 +118,8 @@ public class CheckoutControllerTest {
     }
 
     @Test
-    @DisplayName("Testing add enough products to insure a promotion")
-    public void C0_testAddEnoughProductsToInsurePromotion() {
+    @DisplayName("Testing add enough products to ensure a promotion")
+    public void C0_testAddEnoughProductsToEnsurePromotion() {
         var p1 = DtoSupplier.basketItemRequest(1L, "Amazing Pizza");
         var p2 = DtoSupplier.basketItemRequest(1L, "Amazing Pizza");
         var r1 = addItem(p1);
@@ -145,7 +145,7 @@ public class CheckoutControllerTest {
     }
 
     @Test
-    @DisplayName("Testing add enough products to insure a promotion")
+    @DisplayName("Testing add enough products to Ensure a promotion")
     public void C1_testPromotionsWithNonLinearAddings() {
         var p1 = DtoSupplier.basketItemRequest(1L, "Amazing Pizza");
         var p2 = DtoSupplier.basketItemRequest(1L, "Boring Fries");
@@ -287,6 +287,14 @@ public class CheckoutControllerTest {
         Assertions.assertThat(entities.get(1).getCustomer().getName()).isEqualTo("Test Customer 2");
         Assertions.assertThat(entities.get(1).getProductIds().size()).isEqualTo(1);
         Assertions.assertThat(entities.get(1).getTotalPayable()).isEqualTo(entities.get(1).getTotal());
+    }
+
+    @Test
+    @DisplayName("Clean Database")
+    public void F0_cleaningDatabase() {
+        customerJpaRepository.deleteAll();
+        var entities = basketJpaRepository.findAll();
+        Assertions.assertThat(entities.size()).isEqualTo(0);
     }
 
     private ResponseEntity<BasketResponse> addItem(BasketItemRequest request) {
